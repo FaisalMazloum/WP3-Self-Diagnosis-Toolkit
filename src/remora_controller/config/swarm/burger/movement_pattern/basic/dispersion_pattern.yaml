@@ -13,7 +13,7 @@
 
 /**:
   ros__parameters:
-    dispersion_max_range: 5.0
+    dispersion_max_range: 0.6
     dispersion_min_range: 0.5
     dispersion_front_attraction: 0.0
     dispersion_threshold: 1

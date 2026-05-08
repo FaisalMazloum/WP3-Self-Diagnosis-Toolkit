@@ -21,7 +21,7 @@ def generate_launch_description():
         executable="default_server_endpoint",
         # parameters=[{"ROS_IP": "192.168.8.141"}],
         # parameters=[{"ROS_IP": "192.168.1.159"}],
-        parameters=[{"ROS_IP": tcp_ip}],
+        parameters=[{"ROS_IP": "0.0.0.0"}],
     )
 
 
