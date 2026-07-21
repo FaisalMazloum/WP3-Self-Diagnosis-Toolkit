@@ -53,6 +53,18 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+install(PROGRAMS
+  scripts/pattern_status_publisher.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME pattern_status_publisher
+)
+
+install(PROGRAMS
+  scripts/pattern_supervisor.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME pattern_supervisor
+)
+
 
 install(DIRECTORY
   launch

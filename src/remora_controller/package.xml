@@ -35,6 +35,8 @@
   <exec_depend>ros2_control</exec_depend>
   <exec_depend>twist_mux</exec_depend>
   <exec_depend>ros2swarm</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>ros2run</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
