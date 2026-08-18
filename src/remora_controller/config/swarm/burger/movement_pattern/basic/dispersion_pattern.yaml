@@ -3,8 +3,7 @@
 #     dispersion_max_range: 4.0             # max range to detect robots
 #     dispersion_min_range: 0.15            # min detectable range of other robots
 #     dispersion_front_attraction: 1.0      # Higher values -> prioritize avoiding robots infront
-#     dispersion_threshold: 1               # Avoid even if 1 robot detected
-#     dispersion_linear_if_alone: 0.3
+#     dispersion_threshold: 1               # Values <= to this threshold will be treated as noise. Need > value to be considered as not-alone. If Set to 0, then need > 0 rays to hit a robot to be considered not-alone.
 #     dispersion_angular_if_alone: 0.0
 #     max_translational_velocity: 0.2
 #     max_rotational_velocity: 1.57
@@ -16,8 +15,30 @@
     dispersion_max_range: 3.0
     dispersion_min_range: 0.5
     dispersion_front_attraction: 0.0
-    dispersion_threshold: 1
+    dispersion_threshold: 0
     dispersion_linear_if_alone: 0.3
     dispersion_angular_if_alone: 0.0
     max_translational_velocity: 0.3
-    max_rotational_velocity: 20.0
+    max_rotational_velocity: 90.0
+
+
+
+
+# ===================================================================
+#     Parameters for working Vanilla CRM (optimal performance)      
+# -------------------------------------------------------------------
+# - Small Arena
+# - Random Seed = 1
+# - max_range = 10
+# ===================================================================
+
+# /**:
+#   ros__parameters:
+#     dispersion_max_range: 3.0
+#     dispersion_min_range: 0.5
+#     dispersion_front_attraction: 0.0
+#     dispersion_threshold: 0
+#     dispersion_linear_if_alone: 0.3
+#     dispersion_angular_if_alone: 0.0
+#     max_translational_velocity: 0.3
+#     max_rotational_velocity: 90.0

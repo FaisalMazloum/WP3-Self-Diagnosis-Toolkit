@@ -1,0 +1,11 @@
+digraph G {
+"map" -> "remora0/base_link"[label=" Broadcaster: default_authority\nAverage rate: 50.252\nBuffer length: 3.662\nMost recent transform: 325.084167\nOldest transform: 321.422607\n"];
+"remora0/base_link" -> "remora0/imu_link"[label=" Broadcaster: default_authority\nAverage rate: 50.252\nBuffer length: 3.662\nMost recent transform: 325.084167\nOldest transform: 321.422607\n"];
+"remora0/base_link" -> "remora0/gnss_link"[label=" Broadcaster: default_authority\nAverage rate: 50.252\nBuffer length: 3.662\nMost recent transform: 325.084167\nOldest transform: 321.422607\n"];
+"remora0/base_link" -> "remora0/lidar_link"[label=" Broadcaster: default_authority\nAverage rate: 50.252\nBuffer length: 3.662\nMost recent transform: 325.084167\nOldest transform: 321.422607\n"];
+"map" -> "base_station"[label=" Broadcaster: default_authority\nAverage rate: 45.336\nBuffer length: 3.662\nMost recent transform: 325.084167\nOldest transform: 321.422607\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1785319830.1187367"[ shape=plaintext ] ;
+}->"map";
+}

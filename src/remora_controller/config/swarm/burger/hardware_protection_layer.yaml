@@ -31,4 +31,4 @@
     hardware_protection_layer_front_attraction: 0.0     # higher values prioritize moving forward
     hardware_protection_layer_threshold: 4              # min no. of ray scans to classify as a robot
     max_translational_velocity: 0.1
-    max_rotational_velocity: 30.0
+    max_rotational_velocity: 90.0
