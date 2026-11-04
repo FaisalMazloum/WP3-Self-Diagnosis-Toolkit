@@ -6,8 +6,6 @@ import joblib
 from collections import defaultdict, deque
 import warnings
 warnings.filterwarnings('ignore')
-import sys
-sys.path.insert(0, '/home/faisal-mazloum/Desktop/Machine_Learning/ml_venv/lib/python3.12/site-packages')
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -18,20 +16,22 @@ import time
 import tracemalloc
 import psutil
 
+from fault_detector.paths import model_path
+
 CONFIGS = {
     'deg': {
         'threshold':       0.6973,
         'window_size':     55,
         'feature_indices': [10, 20, 30, 40, 41],
-        'scaler_path':     '/home/faisal-mazloum/Desktop/Machine_Learning/PERSONAL-CODE/my_models/trained_models/degradation/deg_scaler_tuned_classifier_final.pkl',
-        'model_path':      '/home/faisal-mazloum/Desktop/Machine_Learning/PERSONAL-CODE/my_models/trained_models/degradation/deg_best_tuned_lstm_classifier_model_final.keras',
+        'scaler_path':     model_path('degradation', 'deg_scaler_tuned_classifier_final.pkl'),
+        'model_path':      model_path('degradation', 'deg_best_tuned_lstm_classifier_model_final.keras'),
     },
     'if': {
         'threshold':       0.5856,
         'window_size':     52,
         'feature_indices': list(range(1, 42)),
-        'scaler_path':     '/home/faisal-mazloum/Desktop/Machine_Learning/PERSONAL-CODE/my_models/trained_models/IF/IF_scaler_tuned_classifier_final.pkl',
-        'model_path':      '/home/faisal-mazloum/Desktop/Machine_Learning/PERSONAL-CODE/my_models/trained_models/IF/IF_best_tuned_lstm_classifier_model_final.keras',
+        'scaler_path':     model_path('IF', 'IF_scaler_tuned_classifier_final.pkl'),
+        'model_path':      model_path('IF', 'IF_best_tuned_lstm_classifier_model_final.keras'),
     },
 }
 

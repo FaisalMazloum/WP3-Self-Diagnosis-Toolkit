@@ -7,16 +7,18 @@ import pandas as pd
 import warnings
 warnings.filterwarnings('ignore', category=UserWarning)
 
+from fault_detector.paths import model_path
+
 FEATURE_COLS = [f'f{i}_{j}' for i in range(1, 5) for j in range(10)] + ['f5']
 
 CONFIGS = {
     'deg': {
         'threshold':  0.8504,
-        'model_path': '/home/faisal-mazloum/Desktop/Machine_Learning/PERSONAL-CODE/my_models/trained_models/degradation/deg_gbdt_model_test_final.joblib',
+        'model_path': model_path('degradation', 'deg_gbdt_model_test_final.joblib'),
     },
     'if': {
         'threshold':  0.2843,
-        'model_path': '/home/faisal-mazloum/Desktop/Machine_Learning/PERSONAL-CODE/my_models/trained_models/IF/IF_gbdt_model_test_final.joblib',
+        'model_path': model_path('IF', 'IF_gbdt_model_test_final.joblib'),
     },
 }
 

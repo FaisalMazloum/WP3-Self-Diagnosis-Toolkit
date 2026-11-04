@@ -1,0 +1,15 @@
+# Python dependencies for the fault detectors.
+# scikit-learn is pinned to the version the GBDT .joblib models were trained with;
+# loading them with a different version may fail or give wrong results.
+#
+#   python3 -m venv ml_venv
+#   ml_venv/bin/pip install -r requirements.txt
+#   export ML_VENV=$PWD/ml_venv
+numpy==1.26.4
+pandas==2.3.3
+joblib==1.5.2
+scikit-learn==1.3.2
+tensorflow==2.20.0
+keras==3.13.0
+psutil==7.1.0
+matplotlib
