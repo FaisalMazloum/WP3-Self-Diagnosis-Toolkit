@@ -6,11 +6,11 @@
     minimalist_flocking_drive_timer_period: 3                     # number of scan callbacks a chosen behavior is held before the state machine resets to INIT and re-evaluates. Prevents flickering between behaviors on every single scan.
     minimalist_flocking_zone1_threshold: 1.5                      # distance for collision avoidance. If something is closer than this straight ahead, swerve.
     minimalist_flocking_zone2_threshold: 0.5                      # distance for seperation. Robots closer than this to the left/right trigger a turn away from them.
-    minimalist_flocking_zone3_threshold: 4.0                      # distance for cohesion to the side. Turn towards whichever side (left/right) has more neighbours.
-    minimalist_flocking_zone4_threshold: 4.0                      # distance for cogesion to the back. Turn towards robots detected at the rear.
+    minimalist_flocking_zone3_threshold: 2.0                      # distance for cohesion to the side. Turn towards whichever side (left/right) has more neighbours.
+    minimalist_flocking_zone4_threshold: 2.0                      # distance for cogesion to the back. Turn towards robots detected at the rear.
     minimalist_flocking_zone2_robot_threshold: 18                 # max count of occupied scan rays in zone 2 still considered "a robot" rather than a wall.
     minimalist_flocking_robot_threshold: 4                        # 
     minimalist_flocking_zone_borders: [0.7853981634 , 2.3561944902 , 3.926990817, 5.4977871438]
     # global params
-    max_range: 5.0
+    max_range: 10.0
     min_range: 0.05
