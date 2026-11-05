@@ -8,3 +8,6 @@ src/test/
 src/unity_interface/
 src/unity_robotics_demo
 src/unity_robotics_demo_msgs
+
+__pycache__/
+*.pyc
