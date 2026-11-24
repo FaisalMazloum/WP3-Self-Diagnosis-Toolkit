@@ -35,6 +35,9 @@
   <exec_depend>ros2_control</exec_depend>
   <exec_depend>twist_mux</exec_depend>
   <exec_depend>ros2swarm</exec_depend>
+  <exec_depend>remora_interfaces</exec_depend>
+  <exec_depend>communication_interfaces</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
   <exec_depend>ament_index_python</exec_depend>
   <exec_depend>ros2run</exec_depend>
 

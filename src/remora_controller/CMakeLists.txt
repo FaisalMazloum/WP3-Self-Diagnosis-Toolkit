@@ -65,6 +65,12 @@ install(PROGRAMS
   RENAME pattern_supervisor
 )
 
+install(PROGRAMS
+  scripts/gnss_range_sensor.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME gnss_range_sensor
+)
+
 
 install(DIRECTORY
   launch
