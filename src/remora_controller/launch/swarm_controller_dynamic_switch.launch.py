@@ -35,7 +35,8 @@ def launch_setup(context, *args, **kwargs):
             namespace=namespace,
             parameters=[hardware_protection_param_file],
             remappings=[
-                ('range_data', 'obstacle_ranges')
+                # ('range_data', 'obstacle_ranges')gnss_range_data
+                ('range_data', 'gnss_range_data')
             ],
             output="screen"
         ))
