@@ -2,6 +2,7 @@ build/
 install/
 log/
 .vscode/
+.claude
 src/.vscode/
 src/remora_description/
 src/test/

@@ -1,0 +1,13 @@
+
+# Which robot(s) this launch manages:
+#   'auto'     -> per-robot mode, namespace = this machine's hostname (real robots)
+#   'remora3'  -> per-robot mode with an explicit namespace
+#   'central'  -> central mode: one machine runs remora0 .. remora<robot_count-1> (simulation)
+robot_id: 'central'
+
+# Number of robots in central mode. Ignored when robot_id is set.
+robot_count: 1
+
+# Pattern every robot starts on. Must match a ros2swarm executable and have a
+# swarm/movement_pattern/basic/<initial_pattern>.yaml file.
+initial_pattern: 'drive_pattern'
