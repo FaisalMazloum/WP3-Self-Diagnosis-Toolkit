@@ -3,11 +3,11 @@ Starts one gnss_range_sensor per robot (namespaces remora0 .. remora{N-1}).
 
 Simulation (side by side with Unity's raycast LIDAR, defaults are set for Unity):
     ros2 launch remora_controller gnss_range_sensor.launch.py robot_count:=5
+    
     -> /remoraX/gnss_range_data   vs   /remoraX/range_data (Unity)
 
 Real robot (replace the missing LIDAR), one robot per machine, REP-103 (ENU) IMU:
-    ros2 launch remora_controller gnss_range_sensor.launch.py \
-        robot_id:=remora3 output_topic:=range_data imu_yaw_offset_deg:=0
+    ros2 launch remora_controller gnss_range_sensor.launch.py robot_id:=remora3 output_topic:=range_data imu_yaw_offset_deg:=0
 """
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction

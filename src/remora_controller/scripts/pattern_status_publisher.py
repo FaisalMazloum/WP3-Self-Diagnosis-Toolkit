@@ -13,10 +13,16 @@ class PatternStatusPublisher(Node):
         super().__init__('pattern_status_publisher')
 
         self.declare_parameter('robot_count', 1)
+        self.declare_parameter('robot_id', '')
         self.declare_parameter('initial_pattern', 'drive_pattern')
 
         robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
+        robot_id = self.get_parameter('robot_id').get_parameter_value().string_value
         initial_pattern = self.get_parameter('initial_pattern').get_parameter_value().string_value
+
+        # robot_id set -> per-robot mode, robot_count is ignored (see pattern_supervisor).
+        self._single_robot = bool(robot_id)
+        namespaces = [robot_id] if robot_id else [f'remora{i}' for i in range(robot_count)]
 
         status_qos = QoSProfile(
             reliability=QoSReliabilityPolicy.RELIABLE,
@@ -27,8 +33,7 @@ class PatternStatusPublisher(Node):
 
         self._status_publishers = {}
         self._current_pattern = {}
-        for i in range(robot_count):
-            namespace = f'remora{i}'
+        for namespace in namespaces:
             self._status_publishers[namespace] = self.create_publisher(
                 String, f'/{namespace}/current_pattern', status_qos
             )
@@ -44,7 +49,7 @@ class PatternStatusPublisher(Node):
         self.create_timer(1.0 / PUBLISH_RATE_HZ, self._publish_all)
 
         self.get_logger().info(
-            f'Publishing current_pattern for {robot_count} robot(s) at {PUBLISH_RATE_HZ} Hz, '
+            f'Publishing current_pattern for {namespaces} at {PUBLISH_RATE_HZ} Hz, '
             f'starting on "{initial_pattern}"'
         )
 
@@ -56,7 +61,8 @@ class PatternStatusPublisher(Node):
             return
 
         if namespace not in self._current_pattern:
-            self.get_logger().warn(f'Unknown robot namespace "{namespace}" in switch command')
+            if not self._single_robot:
+                self.get_logger().warn(f'Unknown robot namespace "{namespace}" in switch command')
             return
 
         self._current_pattern[namespace] = pattern

@@ -28,23 +28,29 @@ class PatternSupervisor(Node):
         super().__init__('pattern_supervisor')
 
         self.declare_parameter('robot_count', 1)
+        self.declare_parameter('robot_id', '')
         self.declare_parameter('initial_pattern', 'drive_pattern')
 
         robot_count = self.get_parameter('robot_count').get_parameter_value().integer_value
+        robot_id = self.get_parameter('robot_id').get_parameter_value().string_value
         initial_pattern = self.get_parameter('initial_pattern').get_parameter_value().string_value
+
+        # robot_id set -> per-robot mode (one supervisor running on each robot, managing only
+        # itself); robot_count is ignored. Empty -> one central supervisor for remora0..N-1.
+        self._single_robot = bool(robot_id)
+        namespaces = [robot_id] if robot_id else [f'remora{i}' for i in range(robot_count)]
 
         self._status_publisher = self.create_publisher(String, '/pattern_switch_command', 10)
         self._processes = {}
         self._current_pattern = {}
 
-        for i in range(robot_count):
-            namespace = f'remora{i}'
+        for namespace in namespaces:
             self._start_pattern(namespace, initial_pattern)
 
         self.create_subscription(String, '/pattern_command', self._on_pattern_command, 10)
 
         self.get_logger().info(
-            f'Supervising {robot_count} robot(s), starting on "{initial_pattern}". '
+            f'Supervising {namespaces}, starting on "{initial_pattern}". '
             f'Publish "namespace:pattern" on /pattern_command to switch.'
         )
 
@@ -56,7 +62,9 @@ class PatternSupervisor(Node):
             return
 
         if namespace not in self._processes:
-            self.get_logger().warn(f'Unknown robot namespace "{namespace}"')
+            # In per-robot mode, commands for the other robots are expected traffic.
+            if not self._single_robot:
+                self.get_logger().warn(f'Unknown robot namespace "{namespace}"')
             return
 
         if self._current_pattern.get(namespace) == pattern:
