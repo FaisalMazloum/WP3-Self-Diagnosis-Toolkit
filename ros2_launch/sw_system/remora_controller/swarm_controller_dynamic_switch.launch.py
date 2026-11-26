@@ -1,12 +1,8 @@
 """
 Swarm controller with runtime pattern switching (publish "namespace:pattern" on /pattern_command).
 
-Workspace version: configs default to <ws>/ros2_configs/sw_system/remora_controller.
-All settings come from <config_root>/system_config.yaml; launch arguments override them.
-
 Real robot (namespace = hostname, per system_config.yaml default):
     ros2 launch <ws>/ros2_launch/sw_system/remora_controller/swarm_controller_dynamic_switch.launch.py
-
 Simulation, central mode for remora0..4:
     ros2 launch <ws>/ros2_launch/sw_system/remora_controller/swarm_controller_dynamic_switch.launch.py robot_id:=central robot_count:=5
 """
@@ -22,8 +18,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-# Workspace copy of the configs (the one to edit). This file lives in
-# <ws>/ros2_launch/sw_system/remora_controller/, so <ws> is three levels up.
+# <ws>/ros2_launch/sw_system/remora_controller/
 _WS_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', '..'))
 DEFAULT_CONFIG_ROOT = os.path.join(_WS_ROOT, 'ros2_configs', 'sw_system', 'remora_controller')
 
@@ -32,8 +27,7 @@ FROM_CONFIG = 'from_config'
 
 
 def resolve_robot_id(robot_id):
-    # 'central' (or '' in the YAML) -> central mode. A keyword is needed because
-    # ros2 launch rejects an empty value on the command line (robot_id:= is an error).
+    # 'central' (or '' in the YAML) -> central mode. A keyword is needed because ros2 launch rejects an empty value on the command line (robot_id:= is an error).
     if robot_id in ('', 'central'):
         return ''
     if robot_id != 'auto':
@@ -52,7 +46,7 @@ def launch_setup(context, *args, **kwargs):
     with open(system_config_file) as f:
         system_config = yaml.safe_load(f) or {}
 
-    def setting(name):
+    def launch_setting(name):
         value = LaunchConfiguration(name).perform(context)
         if value != FROM_CONFIG:
             return value
@@ -60,9 +54,9 @@ def launch_setup(context, *args, **kwargs):
             raise RuntimeError(f'"{name}" missing from {system_config_file}')
         return system_config[name]
 
-    robot_id = resolve_robot_id(str(setting('robot_id') or ''))
-    robot_count = int(setting('robot_count'))
-    initial_pattern = str(setting('initial_pattern'))
+    robot_id = resolve_robot_id(str(launch_setting('robot_id') or ''))
+    robot_count = int(launch_setting('robot_count'))
+    initial_pattern = str(launch_setting('initial_pattern'))
 
     initial_pattern_file = os.path.join(pattern_dir, f'{initial_pattern}.yaml')
     if not os.path.isfile(initial_pattern_file):
@@ -71,8 +65,6 @@ def launch_setup(context, *args, **kwargs):
     # robot_id set -> per-robot mode: this launch runs on one robot and manages only it (robot_count is ignored).
     # Empty -> central mode for remora0..robot_count-1.
     namespaces = [robot_id] if robot_id else [f'remora{i}' for i in range(robot_count)]
-    # In per-robot mode, put the shared nodes under the robot's namespace so N robots don't
-    # all run nodes named /pattern_supervisor. Their topics are absolute, so they are unaffected.
     shared_node_namespace = robot_id if robot_id else None
 
     supervisor_params = {
@@ -117,10 +109,11 @@ def launch_setup(context, *args, **kwargs):
     # GNSS-based virtual range sensor for the same robot(s).
     actions.append(IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('remora_controller'), 'launch', 'gnss_range_sensor.launch.py')
+            os.path.join(_WS_ROOT, 'ros2_launch', 'sw_system', 'remora_controller', 'gnss_range_sensor.launch.py')
         ),
         launch_arguments={
-            'robot_id': robot_id,
+            'config_root': config_root,
+            'robot_id': robot_id if robot_id else 'central',
             'robot_count': str(robot_count),
         }.items()
     ))

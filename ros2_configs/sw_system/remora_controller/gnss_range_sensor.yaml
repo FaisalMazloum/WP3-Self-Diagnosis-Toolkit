@@ -1,0 +1,16 @@
+/**:
+  ros__parameters:
+    robot_id: ''                      # '' -> use the node namespace
+    status_topic: '/echi_status'
+    output_topic: 'gnss_range_data'
+    angle_min_deg: 0.0
+    angle_max_deg: 359.0
+    angle_increment_deg: 1.0
+    range_max: 10.0
+    robot_radius: 0.225               # m, radius of the disc each neighbour occupies (Remora: 0.45 m diameter
+    scan_rate: 5.0                    # Hz
+    status_rate: 5.0                  # Hz
+    stale_timeout: 1.0                # s, drop neighbours / own fix / imu older than this
+    use_yaw: True                     # False -> world-frame (ENU angles, no IMU needed
+    angle_direction: 'cw'             # 'cw' = RemoraLIDAR convention, 'ccw' = REP-103
+    imu_yaw_offset_deg: 0.0           # yaw_enu = yaw_imu + offset (Unity IMU: 90)

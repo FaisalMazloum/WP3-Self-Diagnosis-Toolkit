@@ -2,8 +2,6 @@
 """
 GNSS-based virtual range sensor ("LIDAR from GNSS"), robots only.
 
-Run one instance per robot, inside the robot's namespace (e.g. /remora3).
-
   1. Subscribes to  <ns>/gnss  (sensor_msgs/NavSatFix, RTK)
      and broadcasts  /echi_status  (remora_interfaces/EchiStatus, shared by all robots).
   2. Subscribes to  /echi_status  and keeps the latest fix of every other robot
@@ -77,7 +75,7 @@ class GnssRangeSensor(Node):
         self.declare_parameter('status_topic', '/echi_status')
         self.declare_parameter('output_topic', 'gnss_range_data')
         self.declare_parameter('angle_min_deg', 0.0)
-        self.declare_parameter('angle_max_deg', 360.0)
+        self.declare_parameter('angle_max_deg', 259.0)
         self.declare_parameter('angle_increment_deg', 1.0)
         self.declare_parameter('range_max', 10.0)
         self.declare_parameter('robot_radius', 0.225)       # m, radius of the disc each neighbour occupies (Remora: 0.45 m diameter)

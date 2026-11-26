@@ -1,11 +1,8 @@
 """
 Swarm controller with runtime pattern switching (publish "namespace:pattern" on /pattern_command).
 
-All settings come from <config_root>/system_config.yaml; launch arguments override them.
-
 Real robot (namespace = hostname, per system_config.yaml default):
-    ros2 launch remora_controller swarm_controller_dynamic_switch.launch.py
-
+    ros2 launch remora_controller swarm_controller_dynamic_switch.launch.py robot_id:=remora0
 Simulation, central mode for remora0..4:
     ros2 launch remora_controller swarm_controller_dynamic_switch.launch.py robot_id:=central robot_count:=5
 """
@@ -49,7 +46,7 @@ def launch_setup(context, *args, **kwargs):
     with open(system_config_file) as f:
         system_config = yaml.safe_load(f) or {}
 
-    def setting(name):
+    def launch_setting(name):
         value = LaunchConfiguration(name).perform(context)
         if value != FROM_CONFIG:
             return value
@@ -57,9 +54,9 @@ def launch_setup(context, *args, **kwargs):
             raise RuntimeError(f'"{name}" missing from {system_config_file}')
         return system_config[name]
 
-    robot_id = resolve_robot_id(str(setting('robot_id') or ''))
-    robot_count = int(setting('robot_count'))
-    initial_pattern = str(setting('initial_pattern'))
+    robot_id = resolve_robot_id(str(launch_setting('robot_id') or ''))
+    robot_count = int(launch_setting('robot_count'))
+    initial_pattern = str(launch_setting('initial_pattern'))
 
     initial_pattern_file = os.path.join(pattern_dir, f'{initial_pattern}.yaml')
     if not os.path.isfile(initial_pattern_file):
@@ -68,8 +65,6 @@ def launch_setup(context, *args, **kwargs):
     # robot_id set -> per-robot mode: this launch runs on one robot and manages only it (robot_count is ignored).
     # Empty -> central mode for remora0..robot_count-1.
     namespaces = [robot_id] if robot_id else [f'remora{i}' for i in range(robot_count)]
-    # In per-robot mode, put the shared nodes under the robot's namespace so N robots don't
-    # all run nodes named /pattern_supervisor. Their topics are absolute, so they are unaffected.
     shared_node_namespace = robot_id if robot_id else None
 
     supervisor_params = {
@@ -117,7 +112,8 @@ def launch_setup(context, *args, **kwargs):
             os.path.join(get_package_share_directory('remora_controller'), 'launch', 'gnss_range_sensor.launch.py')
         ),
         launch_arguments={
-            'robot_id': robot_id,
+            'config_root': config_root,
+            'robot_id': robot_id if robot_id else 'central',
             'robot_count': str(robot_count),
         }.items()
     ))

@@ -43,8 +43,8 @@ class PatternSupervisor(Node):
         initial_pattern = self.get_parameter('initial_pattern').get_parameter_value().string_value
         self.pattern_dir = self.get_parameter('swarm_movement_pattern_dir').get_parameter_value().string_value
 
-        # robot_id set -> per-robot mode (one supervisor running on each robot, managing only
-        # itself); robot_count is ignored. Empty -> one central supervisor for remora0..N-1.
+        # robot_id set -> per-robot mode (one supervisor running on each robot, managing only itself); robot_count is ignored.
+        # Empty -> one central supervisor for remora0..N-1.
         self._single_robot = bool(robot_id)
         namespaces = [robot_id] if robot_id else [f'remora{i}' for i in range(robot_count)]
 

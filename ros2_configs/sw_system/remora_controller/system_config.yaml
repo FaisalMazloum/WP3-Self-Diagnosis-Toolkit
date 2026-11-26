@@ -6,7 +6,7 @@
 robot_id: 'auto'
 
 # Number of robots in central mode. Ignored when robot_id is set.
-robot_count: 1
+robot_count: 20
 
 # Pattern every robot starts on. Must match a ros2swarm executable and have a
 # swarm/movement_pattern/basic/<initial_pattern>.yaml file.
